@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Calculator</title>
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #ff1b1b, rgb(0, 0, 0));
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #ffcccc;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        /* Buttons Row */
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .button-row button {
+            background: linear-gradient(to bottom, #ffffff, #d3d3d3);
+            color: black;
+            border: 1px solid #ccc;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .button-row button:hover {
+            background: linear-gradient(to bottom, #e6e6e6, #cccccc);
+            transform: scale(1.05);
+        }
+
+        /* Form Boxes */
+        .form-box {
+            background-color: white;
+            color: black;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .form-box label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .form-box select,
+        .form-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .form-box button {
+            background-color: #800000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .form-box button:hover {
+            background-color: #ff6666;
+            transform: scale(1.05);
+        }
+
+        .form-box p {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Image Styling */
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Responsive Layout */
+        @media screen and (max-width: 768px) {
+            .button-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .form-box {
+                padding: 15px;
+            }
+        }
+
+        /* Footer Styling */
+        footer {
+            text-align: center;
+            color: #ddd;
+            font-size: 0.8rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #800000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Title Section -->
+        <img src="logo.png" alt="Hard Bind Image">
+
+        <!-- Navigation Buttons -->
+        <div class="button-row">
+            <button onclick="scrollToSection('hardbind')">BOOK PRICE</button>
+            <button onclick="scrollToSection('softcoil')">OTHER BINDINGS</button>
+            <button onclick="scrollToSection('tarp')">TARP PRICE</button>
+        </div>
+
+        <!-- Hardbound Price Section -->
+        <div id="hardbind" class="form-box">
+            <img src="hard.jpg" alt="Hard Bind Image">
+            <h2>Hard Bound Price Calculator</h2>
+            <label for="hardbind-size">Select <b>Size:</b></label>
+            <select id="hardbind-size">
+                <option value="150">Short - 150 PHP</option>
+                <option value="175">A4 - 175 PHP</option>
+                <option value="190">Long - 190 PHP</option>
+            </select>
+
+            <label for="lines">Enter <b>Number of Lines:</b> (20 PHP per line)</label>
+            <input type="number" id="lines" placeholder="Enter number of lines" min="0">
+
+            <label for="copies">Enter <b>Number of Copies:</b></label>
+            <input type="number" id="copies" placeholder="Enter number of copies" min="1">
+
+            <button onclick="calculateHardbind()">Calculate Total</button>
+            <p id="hardbind-total">Total: 0 PHP</p>
+        </div>
+
+        <!-- Soft, Coil, and Ring Bind Section -->
+        <div id="softcoil" class="form-box">
+            <img src="soft.jpg" alt="Other Bindings Image">
+            <h2>Soft, Coil, & Ring Bind Price Calculator</h2>
+            <label for="binding-type">Select <b>Binding Type:</b></label>
+            <select id="binding-type">
+                <option value="70">Softbind - Short (70 PHP)</option>
+                <option value="80">Softbind - A4 (80 PHP)</option>
+                <option value="90">Softbind - Long (90 PHP)</option>
+                <option value="80">Ringbind - Short (80 PHP)</option>
+                <option value="90">Ringbind - A4 (90 PHP)</option>
+                <option value="100">Ringbind - Long (100 PHP)</option>
+            </select>
+
+            <label for="pvc-cover">Add <b>PVC Plastic Cover:</b></label>
+            <select id="pvc-cover">
+                <option value="0">None</option>
+                <option value="10">Front Only (10 PHP)</option>
+                <option value="20">Front & Back (20 PHP)</option>
+            </select>
+
+            <button onclick="calculateSoftCoil()">Calculate Total</button>
+            <p id="softcoil-total">Total: 0 PHP</p>
+        </div>
+
+        <!-- Tarp Price Section -->
+        <div id="tarp" class="form-box">
+            <img src="tarp.png" alt="Tarp Image">
+            <h2>Tarp Price Calculator</h2>
+            <label for="length">Enter <b>Length (feet):</b></label>
+            <input type="number" id="length" placeholder="Enter length" min="0">
+
+            <label for="width">Enter <b>Width (feet):</b></label>
+            <input type="number" id="width" placeholder="Enter width" min="0">
+
+            <button onclick="calculateTarp()">Calculate Total</button>
+            <p id="tarp-total">Total: 0 PHP</p>
+        </div>
+    </div>
+
+    <footer>
+        Developed by: Grant Nicart
+    </footer>
+
+    <script>
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+        }
+
+        function calculateHardbind() {
+            const size = parseFloat(document.getElementById("hardbind-size").value);
+            const lines = parseInt(document.getElementById("lines").value) || 0;
+            const copies = parseInt(document.getElementById("copies").value) || 1;
+
+            const lineCost = lines * 20;
+            const total = (size + lineCost) * copies;
+
+            document.getElementById("hardbind-total").innerText = `Total: ${total} PHP`;
+        }
+
+        function calculateSoftCoil() {
+            const bindingType = parseFloat(document.getElementById("binding-type").value);
+            const pvcCover = parseFloat(document.getElementById("pvc-cover").value);
+
+            const total = bindingType + pvcCover;
+
+            document.getElementById("softcoil-total").innerText = `Total: ${total} PHP`;
+        }
+
+        function calculateTarp() {
+            const length = parseFloat(document.getElementById("length").value) || 0;
+            const width = parseFloat(document.getElementById("width").value) || 0;
+
+            let total = length * width * 20;
+
+            if (total < 120) total = 120;
+
+            document.getElementById("tarp-total").innerText = `Total: ${total} PHP`;
+        }
+    </script>
+</body>
+</html>
